@@ -17,6 +17,17 @@ param addsMocksCpu string
 
 param addsMocksMemory string
 
+param whiteListedIps string
+
+var ipSecurityRestrictions array = [
+  for addressEntry in json(whiteListedIps).addresses: {
+    name: addressEntry.name
+    description: addressEntry.name
+    ipAddressRange: addressEntry.address
+    action: 'Allow'
+  }
+]
+
 resource adds_mocks_efs 'Microsoft.App/containerApps@2025-02-02-preview' = {
   name: 'adds-mocks-efs'
   location: location
@@ -27,6 +38,7 @@ resource adds_mocks_efs 'Microsoft.App/containerApps@2025-02-02-preview' = {
         external: true
         targetPort: int(adds_mocks_efs_containerport)
         transport: 'http'
+        ipSecurityRestrictions: ipSecurityRestrictions
       }
       registries: [
         {
