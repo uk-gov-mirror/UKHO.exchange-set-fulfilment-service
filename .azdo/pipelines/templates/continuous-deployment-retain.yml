@@ -29,6 +29,26 @@ jobs:
         - download: none
 
         - task: AzureCLI@2
+          displayName: Check Key Vault Secrets Officer role
+          inputs:
+            azureSubscription: ${{ variables.AzureSubscription }}
+            workingDirectory: $(Build.SourcesDirectory)
+            scriptType: bash
+            scriptLocation: inlineScript
+            inlineScript: |
+              roleExists=$(az role assignment list --scope /subscriptions/$AZURE_SUBSCRIPTION_ID --role b86a8fe4-44ce-4948-aee5-eccb2c155cd7 --assignee $PIPELINE_CLIENT_OBJECT_ID --query "[] | length(@)")
+
+              if [ "$roleExists" -eq "0" ]; then
+                echo "Assigning 'Key Vault Secrets Officer' role to pipeline client principal..."
+                az role assignment create --assignee-object-id $PIPELINE_CLIENT_OBJECT_ID --role b86a8fe4-44ce-4948-aee5-eccb2c155cd7 --scope /subscriptions/$AZURE_SUBSCRIPTION_ID
+              else
+                echo "'Key Vault Secrets Officer' role already assigned to pipeline client principal, skipping assignment"
+              fi
+          env:
+            PIPELINE_CLIENT_OBJECT_ID: $(PIPELINE-CLIENT-OBJECT-ID)
+            AZURE_SUBSCRIPTION_ID: $(AZURE_SUBSCRIPTION_ID)
+
+        - task: AzureCLI@2
           displayName: Deploy permanent infrastructure
           inputs:
             azureSubscription: ${{ variables.AzureSubscription }}
