@@ -64,6 +64,14 @@ variables:
 - name: Container
   value: "ukhydrographicoffice/terraform-azure-powershell-unzip:1.13.0"
 
+resources:
+  repositories:
+  - repository: UKHOTemplates
+    type: github
+    name: UKHO/devops-pipelinetemplates
+    endpoint: UKHO
+    ref: refs/heads/main
+
 stages:
 - stage: VulnerabilityChecks
   displayName: Checks
@@ -144,6 +152,16 @@ stages:
           ShortName: Live
           ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
           ContainerImage: ${{ variables.Container }}
+
+    - job: LiveRetainPipeline
+      displayName: LIVE - retain pipeline
+      dependsOn:
+      - LiveAPIMDeploy
+      steps:
+      - checkout: UKHOTemplates
+      - template: retain-pipelinerun/retain-pipelinerun.yml@UKHOTemplates
+        parameters:
+          DaysValid: 730
 
   - stage: vNextIatDeploy
     dependsOn:
