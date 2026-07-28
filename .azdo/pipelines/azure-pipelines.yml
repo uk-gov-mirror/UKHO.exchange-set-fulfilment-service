@@ -173,7 +173,7 @@ stages:
     dependsOn:
     - DevDeploy
     displayName: vNext IAT Deploy
-    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/dev/'), eq(variables['Build.SourceBranch'], 'refs/heads/feature/300198-roll-back-efs-iic-tool-version')))
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/dev/')))
     jobs:
     - template: templates/continuous-deployment.yml
       parameters:
@@ -191,7 +191,7 @@ stages:
     dependsOn:
     - vnextiatDeploy
     displayName: vNextE2E Deploy
-    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/feature/300198-roll-back-efs-iic-tool-version')))
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
     jobs:
     - template: templates/continuous-deployment.yml
       parameters:
@@ -208,7 +208,7 @@ stages:
     dependsOn:
     - DevDeploy
     displayName: IAT Deploy
-    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'), eq(variables['Build.SourceBranch'], 'refs/heads/feature/300198-roll-back-efs-iic-tool-version')))
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
     jobs:
     - template: templates/continuous-deployment.yml
       parameters:
