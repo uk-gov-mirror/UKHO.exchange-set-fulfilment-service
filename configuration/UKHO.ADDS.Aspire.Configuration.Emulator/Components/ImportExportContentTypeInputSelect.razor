@@ -3,7 +3,7 @@
 
 <AzureInputSelect AdditionalAttributes="@AdditionalAttributes" TValue="@string" Value="@Value" ValueChanged="@HandleValueChanged" ValueExpression="@ValueExpression">
     <option checked="@(Value is null)" value="">(No content type)</option>
-    <option checked="@(Value is MediaType.SecretReference)" value="@MediaType.SecretReference">Key Vault Reference (@MediaType.SecretReference)</option>
+    <option checked="@(Value is MediaType.KeyVaultReference)" value="@MediaType.KeyVaultReference">Key Vault Reference (@MediaType.KeyVaultReference)</option>
     <option checked="@(Value is MediaType.Json)" value="@MediaType.Json">JSON (@MediaType.Json)</option>
 </AzureInputSelect>
 

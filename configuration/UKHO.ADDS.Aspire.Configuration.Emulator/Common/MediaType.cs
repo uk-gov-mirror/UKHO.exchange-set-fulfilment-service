@@ -17,5 +17,5 @@ public static class MediaType
 
     public const string Labels = "application/vnd.microsoft.appconfig.labelset+json";
 
-    public const string SecretReference = "application/vnd.microsoft.appconfig.keyvaultref+json";
+    public const string KeyVaultReference = "application/vnd.microsoft.appconfig.keyvaultref+json";
 }
